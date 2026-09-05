@@ -54,6 +54,15 @@ class Checks(unittest.TestCase):
         report = inspect(data, MAP)
         self.assertEqual([f['status'] for f in report['findings']], ['cached_metadata_only'])
 
+    def test_cache_lookalikes_remain_reviewable(self):
+        for options in ({'type': 'n8n-nodes-base.httpRequest'}, {'typeVersion': 3}):
+            data = workflow(NEW, **options)
+            data['nodes'][0]['parameters']['databaseId']['cachedResultName'] = OLD
+            self.assertEqual(inspect(data, MAP)['findings'][0]['status'], 'reference_requires_review')
+        data = workflow(NEW)
+        data['nodes'][0]['parameters']['payload'] = {'cachedResultName': OLD}
+        self.assertEqual(inspect(data, MAP)['findings'][0]['status'], 'reference_requires_review')
+
     def test_expression_never_rebound(self):
         data = workflow('={{ "' + OLD + '" }}')
         hit = inspect(data, MAP)['findings'][0]

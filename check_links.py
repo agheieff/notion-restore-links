@@ -99,7 +99,9 @@ def inspect(workflow, records):
                 if old == target['new_id']:
                     continue
                 status = 'reference_requires_review'
-                if path[-1] in ('cachedResultUrl', 'cachedResultName'):
+                # A lookalike field in another node or nested payload can be live data.
+                if supported and path in (('databaseId', 'cachedResultUrl'),
+                                           ('databaseId', 'cachedResultName')):
                     status = 'cached_metadata_only'
                 elif dynamic:
                     status = 'dynamic_expression_requires_review'

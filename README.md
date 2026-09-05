@@ -34,7 +34,7 @@ Supply mappings from verified migration or restore evidence. Names are not suffi
 ## What the report means
 
 - **Literal database rebind candidate:** a supported Notion node parameter addresses an old database ID. The report proposes a replacement locator for review.
-- **Cached metadata:** the old ID appears in a cached display field, which alone does not establish a live dependency.
+- **Cached metadata:** the old ID appears in a supported Notion database locator's cached display field, which alone does not establish a live dependency. Lookalike fields elsewhere remain review findings.
 - **Review required:** expressions, other node types, disabled nodes and unverified versions need separate interpretation.
 
 Literal proposals cover Notion node versions 2, 2.1 and 2.2: database get (including its omitted default operation), plus explicitly selected database-page create and getAll operations. Other omitted operations receive no proposal. Version 3 has no verified adapter and is reported for review.
@@ -43,7 +43,7 @@ Only string values inside node parameters and IDs in the supplied map are scanne
 
 ## Validation
 
-Fourteen local tests cover reference classification, ambiguous URLs, ID-map conflicts, input preservation and refusal to overwrite evidence. A separate check of n8n's unmodified [database-get test workflow](https://github.com/n8n-io/n8n/blob/33eb5c196e0ce3a2c71525929a4ef861cb94b168/packages/nodes-base/nodes/Notion/test/node/v2/database/get.workflow.json), with a synthetic destination map, produced one literal candidate and one cached-link finding. That fixture exposed the omitted-default-operation case.
+Fifteen local tests cover reference classification, ambiguous URLs, ID-map conflicts, input preservation and refusal to overwrite evidence. A separate check of n8n's unmodified [database-get test workflow](https://github.com/n8n-io/n8n/blob/33eb5c196e0ce3a2c71525929a4ef861cb94b168/packages/nodes-base/nodes/Notion/test/node/v2/database/get.workflow.json), with a synthetic destination map, produced one literal candidate and one cached-link finding. That fixture exposed the omitted-default-operation case.
 
 No customer restore or live Notion/n8n execution has been validated. Source contracts were inspected at n8n commit `33eb5c196e0ce3a2c71525929a4ef861cb94b168`; upstream source and fixtures are not distributed here.
 
